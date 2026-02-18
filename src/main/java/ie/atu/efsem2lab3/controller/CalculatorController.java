@@ -1,6 +1,7 @@
 package ie.atu.efsem2lab3.controller;
 
 import ie.atu.efsem2lab3.service.CalculatorService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,8 +17,16 @@ public class CalculatorController {
     }
 
     @GetMapping("/add")
-    public int add(@RequestParam int a, @RequestParam int b){
-    int rslt = a+b;
-        return rslt;
+    public ResponseEntity<Integer>  add(@RequestParam int a, @RequestParam int b){
+    int rslt = calculatorService.add(a,b);
+        return ResponseEntity.ok(rslt);
+    }
+    @GetMapping("/divide")
+    public ResponseEntity<?>  divide(@RequestParam int a, @RequestParam int b){
+        if(b == 0){
+            return ResponseEntity.badRequest().body("Division by zero is not allowed");
+        }
+        int rslt = calculatorService.divide(a,b);
+        return ResponseEntity.ok(rslt);
     }
 }
